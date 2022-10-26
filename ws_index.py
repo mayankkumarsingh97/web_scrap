@@ -23,17 +23,24 @@ else:
     for tagsobject in all_info_div:
         try:
             name= tagsobject.find(attrs={"class":"business-name"}).span.get_text()
-            website= tagsobject.find(attrs={"class":"links"}).a.get['href']
+            website= tagsobject.find(attrs={"class":"links"}).a.get('href')
             phone_no= tagsobject.find(attrs={"class":"phones phone primary"}).get_text().strip('')
             address_1= tagsobject.find(attrs={"class":"adr"}).find('div',{'class':'street-address'}).text
             address_2= tagsobject.find(attrs={"class":"adr"}).find('div',{'class':'locality'}).text
         except Exception as e:
             print(e)
         else:
-            print('\n')
-            print(name,website,phone_no,address_1,address_2)
-            print('\n')
+            if len(tagsobject) > 0:
+
+                print('\n')
+                print(name)
+                print(website)
+                print(phone_no)
+                print(address_1)
+                print(address_2)
+                print('\n')
            
+
 
 
 
