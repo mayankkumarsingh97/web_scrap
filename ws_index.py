@@ -1,10 +1,12 @@
+from types import NoneType
 from bs4 import BeautifulSoup
 import requests
 from csv import writer
+
 # url='https://www.yellowpages.com/'
 # url='http://localhost:8000/'
-url='https://www.yellowpages.com/search?search_terms=restaurants&geo_location_terms=New+York%2C+NY'
-# url='https://www.yellowpages.com/search?search_terms=restaurants&geo_location_terms=New%20York%2C%20NY&page=2'
+# url='https://www.yellowpages.com/search?search_terms=Electricians&geo_location_terms=New+York%2C+NY'
+url='https://www.yellowpages.com/search?search_terms=restaurants&geo_location_terms=New%20York%2C%20NY&page=2'
 
 # for i in range(1,7):
 #     url=f'https://www.yellowpages.com/search?search_terms=electric+motor+repair&geo_location_terms=New+York%2C+NY&page-{0}'.format(i)
@@ -16,29 +18,53 @@ try:
     res=requests.get(url)
     soup_res = BeautifulSoup(res.content,'html.parser')
     all_info_div= soup_res.find_all('div',class_='info')
-except Exception as e:
-    print(e)
+    print(f'all info div',{len(all_info_div)})
+# except Exception as e:
+    # print(e)
+except:
+    pass    
 else:
-
+    all_name=[]
+    all_website=[]
+    all_phone_no=[]
+    address_one=[]
+    address_two=[]
     for tagsobject in all_info_div:
         try:
-            name= tagsobject.find(attrs={"class":"business-name"}).span.get_text()
-            website= tagsobject.find(attrs={"class":"links"}).a.get('href')
-            phone_no= tagsobject.find(attrs={"class":"phones phone primary"}).get_text().strip('')
-            address_1= tagsobject.find(attrs={"class":"adr"}).find('div',{'class':'street-address'}).text
-            address_2= tagsobject.find(attrs={"class":"adr"}).find('div',{'class':'locality'}).text
+            if tagsobject.find(attrs={"class":"business-name"}) is not None:
+                name= tagsobject.find(attrs={"class":"business-name"}).span.get_text()
+                website= tagsobject.find(attrs={"class":"links"}).a.get('href')
+                phone_no= tagsobject.find(attrs={"class":"phones phone primary"}).get_text().strip('')
+                address_1= tagsobject.find(attrs={"class":"adr"}).find('div',{'class':'street-address'}).text
+                address_2= tagsobject.find(attrs={"class":"adr"}).find('div',{'class':'locality'}).text
+                all_name.append(name)
+                all_website.append(website)
+                all_phone_no.append(phone_no)
+                address_one.append(address_1)
+                address_two.append(address_2)
         except Exception as e:
             print(e)
         else:
-            if len(tagsobject) > 0:
+            pass
 
-                print('\n')
-                print(name)
-                print(website)
-                print(phone_no)
-                print(address_1)
-                print(address_2)
-                print('\n')
+if len(all_name) > 0:
+    print('\n')
+    # print(name)
+    # print(website)
+    # print(phone_no)
+    # print(address_1)
+    # print(address_2)
+    # print(tagsobject)
+
+    # print(len(all_name))
+    print('nameeeeeeeeeeee',len(all_name), all_name,'\n\n')
+
+    print('all websitessssssssssss', len(all_website), all_website,'\n\n')
+
+    print('all phonessssssssssssssss',len(all_phone_no), all_phone_no,'\n\n')
+    print('all address oneeeeee', len(address_one),address_one,'\n\n')
+    print('address two',len(address_two), address_two,'\n\n')
+    print('\n')
            
 
 
@@ -50,23 +76,7 @@ else:
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 # list1 = []
-
 # name1={'Name':'Ajay',"Address":'178 Shiv Durga Vihar, Lakkarpur','pin':'121008','houseColor':'lightblue'}
 # name2={'Name':'Rajnath',"Address":'H-150 Mohan Durga Vihar, Shivpur','pin':'621008','houseColor':'cyan'}
 # name3={'Name':'Vijay kumar',"Address":'G-196 Noida, UP','pin':'121008','houseColor':'green'}
